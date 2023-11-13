@@ -9,6 +9,7 @@ public class IMC {
     }
 
     public static void iniciarPrograma() {
+        double acumPesos = 0, acumAlturas = 0;
         for (int i = 0; i < 3; i++) {
             System.out.println("Ingrese los datos del niño/a " + (i + 1) + ". ");
             String nombre = ingresarNombre();
@@ -16,8 +17,12 @@ public class IMC {
             int altura = ingresarAltura();
             double imc = calcularIMC(peso, altura);
             String categoria = establecerCategoria(imc);
-            mostrarResultado(nombre, imc, categoria); // Muestra los resultados finales
+            mostrarResultado(nombre, imc, categoria);// Muestra los resultados finales
+            acumPesos += peso;
+            acumAlturas += altura;
         }
+        calcularPromedioPesos(acumPesos);
+        calcularPromedioEstaturas(acumAlturas);
     }
 
     public static String ingresarNombre() {
@@ -110,9 +115,10 @@ public class IMC {
         return true; // Se considera una altura válida a una altura mayor de 100 cm y menor a 270 cm
     }
 
-    public static double calcularIMC(double peso, int altura) {
-        return (peso / (Math.pow((altura / 100), 2))); // Se calcula el IMC dividiendo el peso por la altura (en metros) al cuadrado
+    public static double calcularIMC(double peso, double altura) {
+        return peso / Math.pow((altura / 100), 2);
     }
+
 
     private static String establecerCategoria(double imc) { // Método que retorna la categoría a la que pertenece el niño
         if (imc < 18.5) {
@@ -125,6 +131,17 @@ public class IMC {
             return "Obesidad";
         }
     }
+
+    private static void calcularPromedioEstaturas(double acumAlturas) {
+        double promedioAlturas = acumAlturas / 3;
+        System.out.println("La estatura promedio de los niños es " + promedioAlturas + " centímetros.");
+    }
+
+    private static void calcularPromedioPesos(double acumPesos){
+        double promedioPesos = acumPesos / 3;
+        System.out.println("El peso promedio de los niños es " + promedioPesos + " kilogramos");
+    }
+
 
     public static void mostrarResultado(String nombre, double imc, String categoria) {
         DecimalFormat formato = new DecimalFormat("#.#"); // Define el formato en un decimal
